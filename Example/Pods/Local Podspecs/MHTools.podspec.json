@@ -1,0 +1,22 @@
+{
+  "name": "MHTools",
+  "version": "0.1.0",
+  "summary": "A short description of MHTools.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/YinMengHao/MHTools",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "YinMengHao": "729263080@qq.com"
+  },
+  "source": {
+    "git": "https://github.com/YinMengHao/MHTools.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "MHTools/Classes/**/*"
+}

@@ -1,0 +1,16 @@
+PODS:
+  - MHTools (0.1.0)
+
+DEPENDENCIES:
+  - MHTools (from `../`)
+
+EXTERNAL SOURCES:
+  MHTools:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  MHTools: d05804ce68efdfb5bc60299ebbe8c22e9c68d550
+
+PODFILE CHECKSUM: 551170c682b372febdb1c91494cee7196c230685
+
+COCOAPODS: 1.9.3
