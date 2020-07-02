@@ -26,6 +26,7 @@
 #import "UIView+Toast.h"
 #import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
+#import "UIColor+Hex.h"
 #import "MHBaseConfigure.h"
 #import "MHBaseScreen.h"
 
@@ -431,7 +432,7 @@ static const NSString * CSToastQueueKey             = @"CSToastQueueKey";
     
     if([point isKindOfClass:[NSString class]]) {
         if([point caseInsensitiveCompare:CSToastPositionTop] == NSOrderedSame) {
-            return CGPointMake(self.bounds.size.width/2, (toast.frame.size.height / 2) + KNavigationBarHeight);
+            return CGPointMake(self.bounds.size.width / 2.0, (toast.frame.size.height / 2.0) + KNavigationBarHeight);
         } else if([point caseInsensitiveCompare:CSToastPositionCenter] == NSOrderedSame) {
             return CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
         }

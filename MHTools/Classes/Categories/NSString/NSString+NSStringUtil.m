@@ -12,8 +12,11 @@
 #import <sys/utsname.h>
 #import "NSString+NSStringUtil.h"
 #import "MHBaseScreen.h"
-#import "MHBaseConfigure.h"
+//#import "MHBaseConfigure.h"
 #import "MHDateChange.h"
+
+//#define KScreenWidth [UIScreen mainScreen].bounds.size.width
+//#define KScreenHeight [UIScreen mainScreen].bounds.size.height
 
 @implementation NSString (NSStringUtil)
 +(NSString*)getUUID{
@@ -204,7 +207,7 @@
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:str];
     //设置：在0-1个单位长度内的内容显示成红色
     if ([[str substringToIndex:1] isEqualToString:@"*"]) {
-        [string addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#FF7D26"] range:NSMakeRange(0, 1)];
+        [string addAttribute:NSForegroundColorAttributeName value:[self colorWithHexString:@"#FF7D26"] range:NSMakeRange(0, 1)];
         [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:11] range:NSMakeRange(0, 1)];
     }else{
         [string addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(0, 1)];
@@ -220,13 +223,13 @@
 + (NSAttributedString *)showLabelTextColorWithStr:(NSString *)str :(NSInteger)length :(CGFloat)size {
     NSMutableAttributedString *headerStr = [[NSMutableAttributedString alloc] initWithString: [str substringToIndex:length]];//从零开始截取到length的位置
     [headerStr setAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:size],
-                               NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#808080"]
+                               NSForegroundColorAttributeName:[self colorWithHexString:@"#808080"]
                                }
                        range:NSMakeRange(0, headerStr.length)];
     NSMutableAttributedString *detailStr = [[NSMutableAttributedString alloc] initWithString:str.length>length? [str substringFromIndex:length] : @""];//从length的位置截取到最后
     
     [detailStr setAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:size],
-                               NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#FF6130"]
+                               NSForegroundColorAttributeName:[self colorWithHexString:@"#FF6130"]
                                }
                        range:NSMakeRange(0, detailStr.length)];
     [headerStr appendAttributedString:detailStr];
@@ -905,7 +908,7 @@
         }
     }
 }
-
+//
 + (NSString *)getTimeStringWithString:(NSString *)dateString {
     NSInteger min = [MHDateChange getMinuteWithTimeStr:dateString];
     NSInteger day = min / 60 / 24;
@@ -928,9 +931,9 @@
     struct utsname systemInfo;
     uname(&systemInfo);
     NSString * deviceString = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
-    MHLog(@"%@",deviceString);
+//    NSLog(@"%@",deviceString);
     NSString * phoneType = [NSString stringWithCString: systemInfo.machine encoding:NSASCIIStringEncoding];
-    MHLog(@"%@",phoneType);
+//    MHLog(@"%@",phoneType);
     //iPhone
     if ([deviceString isEqualToString:@"iPhone1,1"])    return @"iPhone 1G";
     if ([deviceString isEqualToString:@"iPhone1,2"])    return @"iPhone 3G";
@@ -977,5 +980,45 @@
         } range:NSRangeFromString(obj)];
     }];
     return attr;
+}
+
++ (UIColor *)colorWithHexString:(NSString *)color {
+    NSString *cString = [[color stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
+    
+    // String should be 6 or 8 characters
+    if ([cString length] < 6) {
+        return [UIColor clearColor];
+    }
+    
+    // 判断前缀并剪切掉
+    if ([cString hasPrefix:@"0X"])
+        cString = [cString substringFromIndex:2];
+    if ([cString hasPrefix:@"#"])
+        cString = [cString substringFromIndex:1];
+    if ([cString length] != 6)
+        return [UIColor clearColor];
+    
+    // 从六位数值中找到RGB对应的位数并转换
+    NSRange range;
+    range.location = 0;
+    range.length = 2;
+    
+    //R、G、B
+    NSString *rString = [cString substringWithRange:range];
+    
+    range.location = 2;
+    NSString *gString = [cString substringWithRange:range];
+    
+    range.location = 4;
+    NSString *bString = [cString substringWithRange:range];
+    
+    // Scan values
+    unsigned int r, g, b;
+    [[NSScanner scannerWithString:rString] scanHexInt:&r];
+    [[NSScanner scannerWithString:gString] scanHexInt:&g];
+    [[NSScanner scannerWithString:bString] scanHexInt:&b];
+    
+    return [UIColor colorWithRed:((float) r / 255.0f) green:((float) g / 255.0f) blue:((float) b / 255.0f) alpha:1.0f];
+
 }
 @end
