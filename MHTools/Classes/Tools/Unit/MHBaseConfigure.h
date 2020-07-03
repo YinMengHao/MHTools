@@ -33,12 +33,20 @@
 // RGBA颜色处理
 #define UIColorFromRGBA(r, g, b, a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
 /*************************颜色******************************/
-#define UIMainColor UIColorFromRGBAHEX(0x04CBB1)
+#define UIMainColor UIColorFromRGBAHEX(0x2AD376)
+#define UIColorThree UIColorFromRGBAHEX(0x333333)
+#define UIColorSix UIColorFromRGBAHEX(0x666666)
+#define UIColorNine UIColorFromRGBAHEX(0x999999)
+#define UIColorLine UIColorFromRGBAHEX(0xE5E5E5)
+#define UIColorDisableEvent UIColorFromRGBAHEX(0xECECEC)
+#define UIColorDisableWord UIColorFromRGBAHEX(0x9B9B9B)
 // RGBA_十六进制颜色处理
 #define UIColorFromRGBAHEX(rgbaHex) [UIColor colorWithRed:((float)((rgbaHex & 0xFF0000) >> 16))/255.0 green:((float)((rgbaHex & 0xFF00) >> 8))/255.0 blue:((float)(rgbaHex & 0xFF))/255.0 alpha:1.0]
 
 /*************************引用转换******************************/
 #define WS(weakSelf)    __weak __typeof(&*self) weakSelf = self
+
+
 
 //自定义Log打印
 #ifdef DEBUG //开发阶段
