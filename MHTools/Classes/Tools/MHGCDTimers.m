@@ -7,12 +7,19 @@
 //
 
 #import "MHGCDTimers.h"
-#define TIMECOUNT 60
+#import "MHBaseConfigure.h"
+#define TIMECOUNT 10
 
 @implementation MHGCDTimers
 
 static dispatch_source_t timers;
-+ (dispatch_source_t)setupTimersWithBtn:(UIButton *)retryBtn {
++ (dispatch_source_t)setupTimersWithBtn:(UIButton *)retryBtn title:(nonnull NSString *)title {
+    return [self configureTimerWithButton:retryBtn title:title callback:nil];
+}
++ (dispatch_source_t)setupTimersWithBtn:(UIButton *)retryBtn title:(nonnull NSString *)title currentSecond:(void (^) (NSUInteger second))secondBlock {
+    return [self configureTimerWithButton:retryBtn title:title callback:secondBlock];
+}
++ (dispatch_source_t)configureTimerWithButton:(UIButton *)retryBtn title:(nonnull NSString *)title callback:(void (^) (NSUInteger second))secondBlock {
     __block NSInteger second = TIMECOUNT;
     //(1)
     dispatch_queue_t quene = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -24,8 +31,11 @@ static dispatch_source_t timers;
     //(4)
     dispatch_source_set_event_handler(timer, ^{
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (secondBlock) {
+                secondBlock(second);
+            }
             if (second == 0) {
-                [retryBtn setTitle:[NSString stringWithFormat:@"发送验证码"] forState:UIControlStateNormal];
+                [retryBtn setTitle:title forState:UIControlStateNormal];
                 [self configureBtnWithEnable:YES button:retryBtn];
                 second = TIMECOUNT;
                 //(6)
@@ -34,7 +44,7 @@ static dispatch_source_t timers;
                 
             } else {
                 [self configureBtnWithEnable:NO button:retryBtn];
-                [retryBtn setTitle:[NSString stringWithFormat:@"%lds",second] forState:UIControlStateNormal];
+                [retryBtn setTitle:[NSString stringWithFormat:@"%@(%ld)", title, second] forState:UIControlStateNormal];
                 second--;
             }
         });
@@ -47,12 +57,10 @@ static dispatch_source_t timers;
 + (void)configureBtnWithEnable:(BOOL)able button:(UIButton *)btn {
     if (able) {
         btn.userInteractionEnabled = YES;
-//        btn.backgroundColor = [UIColor blueColor];
-        [btn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [btn setTitleColor:UIMainColor forState:UIControlStateNormal];
     } else {
         btn.userInteractionEnabled = NO;
-//        btn.backgroundColor = [UIColor lightGrayColor];
-        [btn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [btn setTitleColor:UIColorNine forState:UIControlStateNormal];
     }
 }
 
