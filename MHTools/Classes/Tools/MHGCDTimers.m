@@ -8,10 +8,10 @@
 
 #import "MHGCDTimers.h"
 #import "MHBaseConfigure.h"
-#define TIMECOUNT 10
+#define TIMECOUNT 60
 
 @implementation MHGCDTimers
-
+extern NSUInteger registerTimeSecond;
 static dispatch_source_t timers;
 + (dispatch_source_t)setupTimersWithBtn:(UIButton *)retryBtn title:(nonnull NSString *)title {
     return [self configureTimerWithButton:retryBtn title:title callback:nil];
@@ -52,6 +52,12 @@ static dispatch_source_t timers;
     //(5)
     dispatch_resume(timers);
     return timers;
+}
+
++ (void)stopTimer {
+    dispatch_suspend(timers);
+    timers = nil;
+    registerTimeSecond = 0;
 }
 
 + (void)configureBtnWithEnable:(BOOL)able button:(UIButton *)btn {

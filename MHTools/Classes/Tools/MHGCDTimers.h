@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (dispatch_source_t)setupTimersWithBtn:(UIButton *)retryBtn title:(NSString *)title;
 + (void)configureBtnWithEnable:(BOOL)able button:(UIButton *)btn;
 + (dispatch_source_t)setupTimersWithBtn:(UIButton *)retryBtn title:(NSString *)title currentSecond:(void (^) (NSUInteger second))secondBlock;
++ (void)stopTimer;
 /**
  获取当前时间
  */
